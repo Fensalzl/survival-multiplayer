@@ -1,0 +1,2205 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #002200;
+  color: #33ff33;
+  display: flex;
+  height: 100vh;
+  /* NEU: Verhindert jegliches horizontales Scrollen */
+  overflow-x: hidden;
+}
+
+#container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #000;
+}
+
+#monitor {
+  flex: 1;
+  background: #001100;
+  border: 6px solid #004400;
+  box-shadow: 0 0 20px #00ff00;
+  margin: 10px;
+  padding: 20px;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  --monitor-brightness: 1.0; 
+  --monitor-glow-size: 20px; /* Standardwert für box-shadow */
+  filter: brightness(var(--monitor-brightness));
+  box-shadow: 0 0 var(--monitor-glow-size) #00ff00; /* Nutzt die neue Variable */
+}
+
+#monitorBrightness {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%; 
+    height: 4px;
+    margin-top: 1px; /* Stellt sicher, dass keine obere Verschiebung erfolgt */
+    margin-bottom: 15px; /* Stellt sicher, dass keine untere Verschiebung erfolgt */
+    display: inline-block; /* Muss inline-block sein, um vertical-align zu respektieren */
+    vertical-align: middle; /* Zentriert den Regler mittig zur umgebenden Zeile */
+	background: linear-gradient(to right, #001100 0%, #004400 50%, #001100 100%);
+    outline: none;
+    cursor: pointer;
+}
+
+#monitorBrightness::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px; /* Größer für besseren Rad-Effekt */
+    height: 18px;
+    background: #33ff33; /* Helleres Grün */
+    cursor: grab; /* Zeigt an, dass man es ziehen kann */
+    border: 2px solid #002200; /* Rand für Tiefe */
+    border-radius: 50%; /* WICHTIG: Macht den Thumb rund */
+    box-shadow: 0 0 8px #33ff33, inset 0 0 5px rgba(0, 0, 0, 0.5); /* Leuchten und Tiefe */
+}
+
+/* Stil des Rädchens (Thumb) für Firefox */
+#monitorBrightness::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #33ff33;
+    cursor: grab;
+    border: 2px solid #002200;
+    border-radius: 50%; /* WICHTIG: Macht den Thumb rund */
+    box-shadow: 0 0 8px #33ff33, inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+#monitor::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,255,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+#sidebar {
+  width: 220px;
+  background: #002200;
+  border-left: 4px solid #004400;
+  padding: 12px;
+  box-sizing: border-box;
+  color: #33ff33;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#sidebar h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #004400;
+  padding-bottom: 5px;
+}
+
+label, select, button {
+  width: 100%;
+  font-family: 'Courier New', monospace;
+  background: #003300;
+  border: 1px solid #006600;
+  color: #33ff33;
+  padding: 5px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+button:hover, select:hover {
+  background: #004400;
+}
+
+#buildingDisplay {
+  display: flex;
+  flex-direction: column; 
+  gap: 15px;
+}
+
+#buildingDisplay > div {
+  border: 1px solid #33ff33;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #002200;
+  min-width: 100px;
+  text-align: center;
+}
+
+#stats, #resources, #window.money {
+  display: flex;
+  justify-content: flex-start;
+  gap: 30px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#stats > div, #resources > div, #window.money > div {
+  border: 1px solid #33ff33;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #002200;
+  min-width: 80px;
+  text-align: center;
+}
+
+#chatMessages {
+  height: 150px;
+  overflow-y: auto;
+  background: #001a00;
+  padding: 5px;
+  color: #66ff66;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+}
+
+.dangerButton {
+  background-color: #b30000;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #ff0000;
+  transition: background-color 0.3s ease;
+}
+
+.dangerButton:hover {
+  background-color: #ff1a1a;
+  cursor: pointer;
+}
+
+input[type="text"] {
+  background: #003300;
+  border: 1px solid #006600;
+  color: #33ff33;
+  padding: 5px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+  margin: 5px 0 10px 0;
+}
+/* ... deine bisherige style.css + diese Ergänzungen ... */
+
+#marketList div, #marketBuyList div {
+  background: #002200;
+  border: 1px solid #33ff33;
+  margin-bottom: 5px;
+  padding: 6px 9px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+  font-size: 14px;
+}
+#marketList div button, #marketBuyList div button {
+  background: #003300;
+  border: 1px solid #009900;
+  color: #33ff33;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#marketList div button:hover, #marketBuyList div button:hover {
+  background: #009900;
+}
+
+/* Neuer Stil für Fortschrittsbalken */
+.progress-bar-container {
+    background-color: #003300;
+    border: 1px solid #33ff33;
+    height: 15px;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00ff00;
+    transition: width 0.5s ease-in-out;
+}
+.progress-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 15px;
+    font-size: 10px;
+    color: #000;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #33ff33;
+}
+.building-info {
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 5px;
+    border-left: 2px solid #00ff00;
+}
+.citizen-assignment {
+    display: flex;
+    gap: 5px;
+}
+
+/* Stil für einzelne Gebäude-Items */
+.building-item {
+  border: 1px solid #33ff33;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #002200;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.building-item h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #004400;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.building-item p {
+    margin: 3px 0;
+}
+
+/* Lebensleisten-Styles */
+.health-bar-container {
+    background-color: #003300;
+    border: 1px solid #004400;
+    height: 10px;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+
+.health-bar {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* Button-Gruppe unter dem Gebäude */
+.building-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.building-actions button {
+    flex: 1;
+    margin: 0;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.market-unavailable {
+  background-color: #5c0000 !important; /* Dunkelrot/Karmesin-Basis */
+  color: #ff3333 !important; /* Hellroter Text */
+  border: 1px solid #ff3333 !important;
+  cursor: not-allowed !important;
+  font-weight: bold;
+  text-shadow: 0 0 3px #ff0000; /* Leuchtrot-Effekt */
+  box-shadow: 0 0 5px #ff0000;
+}
+
+.market-unavailable:hover {
+    background-color: #5c0000 !important; /* Kein Hover-Effekt für inaktiven Button */
+    box-shadow: 0 0 5px #ff0000; /* Glow beibehalten */
+}
+/* style.css (am Ende der Datei hinzufügen) */
+
+/* Stil für den Zerstören/Abreißen-Button */
+.destroy-btn {
+    background-color: #5c0000; /* Dunkelrot/Karmesin-Basis */
+    color: #ff3333; /* Hellroter Text */
+    border: 1px solid #ff3333;
+    font-weight: bold;
+    text-shadow: 0 0 3px #ff0000; 
+    box-shadow: 0 0 5px #ff0000;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.destroy-btn:hover {
+    background-color: #7a0000; 
+    box-shadow: 0 0 8px #ff0000;
+}
+#updatesBox {
+  background-color: rgba(40, 40, 40, 0.90);
+  border: 2px solid #666;
+  border-radius: 16px;
+  padding: 16px;
+  width: 670px; /* Leicht mehr als das iframe */
+  margin: 24px auto 12px auto;
+  color: #fff;
+  text-align: left;
+  font-size: 1.05em;
+  box-sizing: border-box;
+  overflow: visible; /* Kein Scrollen im Container */
+}
+
+#updatesBox h3 {
+  text-align: center;
+  color: #ffcc00;
+  margin-top: 0;
+}
+
+/* --- DOS Intro Style --- */
+#intro-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: left;
+}
+#introText {
+  width: 90%;
+  max-width: 700px;
+  line-height: 1.4em;
+}
+#introNextBtn {
+  background: #003300;
+  border: 1px solid #00ff00;
+  color: #33ff33;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+#introNextBtn:hover {
+  background: #004400;
+}
+#loadingArea, pre#loadingArea {
+    color: #33ff33;
+    font-family: Courier New, monospace;
+    padding: 16px;
+    width: 450px;          /* oder eine größere/breitere Zahl, wie du möchtest */
+    max-width: none;
+    font-size: 18px;
+    line-height: 1.6em;
+    margin: 36px 0 0 18px; /* Abstand oben und links, rechts bleibt frei */
+    background: transparent;
+    height: auto;
+    overflow: visible;
+    box-sizing: border-box;
+    border-radius: 10px;
+    text-align: left;
+}
+/* --- LIVE MONITOR --- */
+#liveToggle {
+  /* Positionierung für die Sidebar angepasst */
+  cursor: pointer;
+  background: #003300;
+  color: #33ff33;
+  border: 2px solid #00ff00;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  margin-top: 5px; /* Optional: Abstand zum "Dorf zerstören" Button */
+  transition: background 0.2s;
+  /* Die Eigenschaften position: fixed, bottom, right, width, height, border-radius: 50% wurden entfernt. */
+}
+#liveToggle:hover {
+  background: #004400;
+}
+
+.achievement-badge img {
+    /* <--- Passt die Grafik auf 100% des Badge-Containers an */
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; /* Stellt sicher, dass das Bild den Kreis vollständig ausfüllt */
+    display: block; 
+    margin: 0;
+    padding: 0;
+    filter: grayscale(100%); /* Gesperrte Abzeichen in Grau anzeigen */
+}
+
+/* Stil für freigeschaltete Abzeichen */
+.achievement-badge.unlocked {
+    background-color: #003300; 
+    border-color: #33ff33; /* <--- GRÜNER RAHMEN */
+    box-shadow: 0 0 10px #33ff33; /* Leuchtender Effekt */
+}
+.achievement-badge.unlocked img {
+    filter: none; /* Farbe wiederherstellen */
+}
+/* Tooltip-Stil für die Abzeichen-Beschreibung (Standard: Versteckt) */
+.achievement-badge .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #001100;
+    color: #33ff33;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 5002; 
+    top: 120%; 
+    left: 50%;
+    transform: translateX(-50%); 
+    border: 1px solid #33ff33;
+    font-size: 12px;
+    white-space: normal;
+}
+
+/* Tooltip bei Hover anzeigen */
+.achievement-badge:hover .tooltip-text {
+    visibility: visible;
+}
+
+/* --- Abzeichen Gitter und Styling im Panel --- */
+.achievement-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; 
+    justify-content: flex-start;
+}
+
+/* CONTAINER für ein einzelnes Abzeichen im Panel */
+.achievement-modal-item {
+    width: 120px; 
+    height: 120px;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #002200; 
+    position: relative;
+    transition: all 0.3s ease;
+    border: 2px solid #004400; 
+    box-sizing: border-box;
+}
+
+/* Bild innerhalb des Abzeichens */
+.achievement-modal-item img {
+    width: 70px; 
+    height: 70px;
+    display: block;
+    margin: 5px auto 5px;
+    border-radius: 50%; 
+    transition: filter 0.5s ease;
+}
+
+.achievement-modal-item .badge-name {
+    font-size: 0.85em;
+    color: #33ff33;
+    line-height: 1.1;
+    min-height: 30px; 
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+}
+
+/* 🔒 STIL FÜR NICHT ERREICHTE ABZEICHEN (GRAUSTUFEN) */
+.achievement-modal-item.locked img {
+    filter: grayscale(100%) brightness(40%); 
+    opacity: 0.6;
+}
+
+/* 🔓 STIL FÜR ERREICHTE ABZEICHEN (FARBIG MIT GRÜNEM RAND) */
+.achievement-modal-item.unlocked {
+    border: 2px solid #33ff33; 
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.5); 
+}
+
+.achievement-modal-item.unlocked img {
+    filter: none; 
+    opacity: 1.0;
+}
+/* --- Styling für Abzeichen-Stufen (Tiers) --- */
+
+/* Stufe 1: Standard (Bleibt beim normalen grün) */
+.achievement-modal-item.unlocked.tier-1 {
+    /* Standard-Rahmen bleibt in #33ff33 (wie Willkommen/Gründer) */
+    border: 2px solid #33ff33; 
+    box-shadow: 0 0 8px #33ff33;
+}
+
+/* Stufe 2: Silber */
+.achievement-modal-item.unlocked.tier-2 {
+    border: 2px solid silver; /* Silber-Rahmen */
+    box-shadow: 0 0 10px silver;
+}
+
+/* Stufe 3: Gold */
+.achievement-modal-item.unlocked.tier-3 {
+    border: 2px solid gold; /* Gold-Rahmen */
+    box-shadow: 0 0 12px gold;
+}
+/* --- Styling für Abzeichen auf dem Hauptbildschirm (achievementBadges-Container) --- */
+
+/* Standard-Stil für die kleineren Badges */
+.achievement-badge {
+    width: 35px; 
+    height: 35px;
+    border-radius: 50%;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Ein dünner, unauffälliger Standardrahmen für Abzeichen ohne Stufe */
+    border: 1px solid #004400; 
+    transition: all 0.2s;
+}
+
+.achievement-badge img {
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* Stufe 1: GRÜN/BRONZE */
+.achievement-badge.tier-1 {
+    border: 1px solid #33ff33; 
+    box-shadow: 0 0 4px #33ff33;
+}
+
+/* Stufe 2: SILBER */
+.achievement-badge.tier-2 {
+    border: 2px solid silver; 
+    box-shadow: 0 0 6px silver;
+}
+
+/* Stufe 3: GOLD */
+.achievement-badge.tier-3 {
+    border: 2px solid gold; 
+    box-shadow: 0 0 8px gold;
+}
+/* --- MARKTPLATZ PANEL (neues System) --- */
+#marketPanel {
+  overflow: hidden;
+  background: #001900;
+  border: 2px solid #00ff00;
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: all 0.5s ease-in-out;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}
+
+#marketPanel.active {
+  max-height: 600px;
+  opacity: 1;
+  padding: 20px;
+}
+
+.market-trader {
+  border: 1px solid #33ff33;
+  background: #002200;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.market-trader h4 {
+  margin-top: 0;
+  color: #00ff99;
+  text-shadow: 0 0 5px #00ff66;
+}
+
+.market-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #004400;
+}
+
+.market-item:last-child {
+  border-bottom: none;
+}
+
+.market-item input[type="range"] {
+  flex: 1;
+  accent-color: #00ff00;
+}
+
+.market-item button {
+  background: #003300;
+  border: 1px solid #00ff00;
+  color: #33ff33;
+  font-weight: bold;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.market-item button:hover {
+  background: #004400;
+}
+
+.market-info {
+  font-size: 12px;
+  color: #99ff99;
+}
+/* Globale Market-Button Styles */
+.market-button {
+    padding: 6px 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+/* Kaufen-Button (grün) */
+.market-button.kaufen {
+    background-color: #002200;    /* dunkelgrün wie dein buildMenu */
+    border: 2px solid #33ff33;    /* grüne Umrandung */
+    color: #ffffff;
+}
+
+/* Verkaufen-Button (rot) */
+.market-button.verkaufen {
+    background-color: #330000;    /* dunkelrot */
+    border: 2px solid #ff3333;    /* rote Umrandung */
+    color: #ffffff;
+}
+
+/* Deaktivierter Button */
+.market-button:disabled {
+    background-color: #555555;
+    border-color: #888888;
+    cursor: not-allowed;
+    color: #cccccc;
+}
+@keyframes badgeUnlock {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.achievement-badge.unlocked.new {
+  animation: badgeUnlock 0.5s ease-out;
+}
+/* Pop-Animation für neue Errungenschaften */
+@keyframes popEffect {
+    0% {
+        transform: scale(0.5);
+        box-shadow: 0 0 0px #33ff33;
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.3);
+        box-shadow: 0 0 15px #33ff33;
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #33ff33;
+        opacity: 1;
+    }
+}
+
+/* Klasse, die per JS hinzugefügt wird */
+.achievement-badge.newly-unlocked {
+    animation: popEffect 0.6s ease-out forwards;
+}
+/* --- Kalender Styles --- */
+
+/* Kalender: 7 Tageslichter */
+.day-light {
+    width: 9px; /* Beibehalten wie zuvor */
+    height: 9px; /* Beibehalten wie zuvor */
+    background-color: #003300; 
+    border-radius: 50%;
+    border: 1px solid #33ff33;
+    box-shadow: inset 0 0 3px #000;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.day-light.on {
+    background-color: #00ff00; 
+    /* Blink-Effekt für die aktiven Tageslichter */
+    animation: blink-light 1.5s infinite alternate; 
+}
+
+/* Gelber Fortschrittsbalken Container */
+#monthlyProgressBarContainer {
+    background-color: #003300;
+    border: 1px solid #ffcc00; /* Leicht gelbe Umrandung */
+    height: 1px; /* Etwas höher, damit Marker hineinpassen */
+    margin-bottom: 5px;
+    box-shadow: 0 0 2px #ffcc00;
+    overflow: hidden;
+    position: relative; /* WICHTIG: Damit die Marker absolut positioniert werden können */
+}
+/* Der Füll-Balken (wird per JS in der Breite angepasst) */
+#monthlyProgressBar {
+    background-color: #ffff00; /* Leuchtend Gelb */
+    height: 100%; /* WICHTIG: Soll die Höhe des Containers ausfüllen */
+    width: 0%; /* Startzustand */
+    transition: width 0.7s ease-out; /* Für sanften Übergang beim Füllen */
+    box-shadow: 0 0 8px #ffff00; /* Glow-Effekt */
+}
+/* Kalender: 12 Monatsbirnen (Müssen kleiner werden) */
+#monthBulbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px; 
+    width: 100px; /* Breite reduzieren, da Birnen kleiner sind */
+    margin: 0 auto 8px auto;
+}
+
+.month-bulb {
+    width: 5px; /* Reduziert von 20px */
+    height: 5px; /* Reduziert von 20px */
+    border-radius: 50%;
+    border: 1px solid; /* Randstärke reduziert */
+    background-color: #222222; 
+    box-shadow: inset 0 0 3px #000;
+    transition: background-color 0.5s, box-shadow 0.5s;
+}
+
+/* Monatsbirne im Zustand 'on' (leuchtend) */
+.month-bulb.on {
+    background-color: currentColor; 
+    /* Weniger intensiv leuchten als die Tageslichter, kein Blinken */
+    box-shadow: 0 0 5px currentColor, inset 0 0 3px #fff;
+}
+/* Stil für die Jahresanzeige (Alte Monitor-Anzeige) */
+.old-monitor-display {
+    background-color: #000000;
+    color: #ffff00; /* Gelb wie der Ladebalken */
+    font-family: 'Courier New', monospace;
+    font-size: 16px; 
+    font-weight: bold;
+    text-align: right;
+    padding: 2px 5px;
+    border: 1px dashed #ffff00;
+    box-shadow: 0 0 5px #ffff00;
+    margin: 5px 0;
+    letter-spacing: 2px; /* Macht die Zahl "digitaler" */
+}
+/* Monitor-Aus-Button: Rund und in die Mitte gesetzt (Style ist bereits im HTML, hier für Konsistenz) */
+#monitorOffButton {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 0; 
+    line-height: 50px; 
+    font-size: 12px;
+    margin: 15px auto 0 auto; 
+    display: block;
+    /* Der restliche Stil kommt von der .dangerButton Klasse */
+}
+/* --- Monitor Toggle Button Styles --- */
+#monitorToggleButton {
+    border-radius: 50% !important; /* Rund */
+    width: 50px !important;
+    height: 50px;
+    margin: 15px auto 0 auto !important; /* Zentriert und Abstand */
+    display: flex !important; /* Für Icon-Zentrierung */
+    align-items: center; /* Vertikal zentrieren */
+    justify-content: center; /* Horizontal zentrieren */
+    font-size: 20px; /* Größe des Icons */
+    color: #fff; /* Icon Farbe */
+    border: 2px solid; /* Dynamische Randfarbe */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Initialer Schatten */
+}
+
+/* Zustand: Monitor AN (Standard) */
+#monitorToggleButton.on {
+    background-color: #008000; /* Dunkelgrün */
+    border-color: #00ff00; /* Leuchtendes Grün */
+    box-shadow: 0 0 10px #00ff00, inset 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#monitorToggleButton.on:hover {
+    background-color: #00b300; /* Helleres Grün beim Hover */
+    box-shadow: 0 0 15px #00ff00, inset 0 0 7px rgba(255, 255, 255, 0.7);
+}
+
+/* Zustand: Monitor AUS */
+#monitorToggleButton.off {
+    background-color: #800000; /* Dunkelrot */
+    border-color: #ff0000; /* Leuchtendes Rot */
+    box-shadow: 0 0 10px #ff0000, inset 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#monitorToggleButton.off:hover {
+    background-color: #b30000; /* Helleres Rot beim Hover */
+    box-shadow: 0 0 15px #ff0000, inset 0 0 7px rgba(255, 255, 255, 0.7);
+}
+/* Animation für Blinken (Blink-Effekt) */
+@keyframes blink-light {
+    0%, 100% { box-shadow: 0 0 8px #00ff00; opacity: 1; }
+    50% { box-shadow: 0 0 12px #00ff00, 0 0 20px #00ff00; opacity: 0.8; }
+}
+
+#liveToggle[disabled], #liveToggle.disabled {
+  color: gray !important;
+  cursor: not-allowed !important;
+  opacity: 0.56;
+}
+button.disabled:disabled,
+button:disabled {
+  background-color: #888 !important;
+  color: #eee !important;
+  cursor: not-allowed !important;
+  box-shadow: none;
+  opacity: 0.62;
+}
+
+/* ============================================================
+   EINHEITLICHE PANEL-STYLES MIT CRT-EFFEKT
+   ============================================================ */
+
+/* === Allgemeine Regel: wenn ein Panel aktiv ist, Spielinhalt verschieben === */
+#monitor.live-active #intro-screen,
+#monitor.live-active #start-screen,
+#monitor.live-active #game-screen,
+#monitor.achievement-active #intro-screen,
+#monitor.achievement-active #start-screen,
+#monitor.achievement-active #game-screen,
+#monitor.skill-active #intro-screen,
+#monitor.skill-active #start-screen,
+#monitor.skill-active #game-screen {
+  max-width: calc(100% - 440px);
+}
+
+/* === GRUNDSTIL FÜR ALLE PANELS === */
+#liveMonitor,
+#achievementPanel,
+#skillTreePanel {
+  position: absolute;
+  right: -430px;
+  width: 430px;
+  height: 520px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #001100;
+  border-left: 2px solid #00ff00;
+  box-shadow: 0 0 15px #00ff00;
+  color: #33ff33;
+  font-family: 'Courier New', monospace;
+
+  transition: right 0.4s ease-out;
+  z-index: 5000;
+  overflow-y: auto;
+  padding: 15px;
+
+  /* CRT-Look durch leichtes inneres Glühen */
+  background-image: 
+      repeating-linear-gradient(0deg, rgba(0,255,0,0.06) 0px, rgba(0,255,0,0.03) 1px, transparent 2px),
+      radial-gradient(circle at 50% 50%, rgba(0,255,0,0.08), transparent 70%);
+  background-blend-mode: overlay;
+}
+
+/* === AKTIVER ZUSTAND === */
+#liveMonitor.active,
+#achievementPanel.active,
+#skillTreePanel.active {
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+}
+
+/* === Einheitliche Header-Stile === */
+#achievementPanel h2,
+#skillTreePanel h2 {
+  font-size: 1.1em;
+  text-align: center;
+  color: #33ff33;
+  border-bottom: 1px solid #00ff00;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* === Scrollbar-Retro-Style === */
+#liveMonitor::-webkit-scrollbar,
+#achievementPanel::-webkit-scrollbar,
+#skillTreePanel::-webkit-scrollbar {
+  width: 6px;
+}
+#liveMonitor::-webkit-scrollbar-thumb,
+#achievementPanel::-webkit-scrollbar-thumb,
+#skillTreePanel::-webkit-scrollbar-thumb {
+  background-color: #00ff00;
+  border-radius: 3px;
+}
+
+/* === Textdarstellung === */
+#achievementPanel p,
+#skillTreePanel p {
+  color: #99ff99;
+  line-height: 1.3;
+}
+
+/* === CRT-Flackern === */
+@keyframes crt-flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.96; }
+  100% { opacity: 1; }
+}
+#liveMonitor,
+#achievementPanel,
+#skillTreePanel {
+  animation: crt-flicker 1.2s infinite alternate;
+}
+
+/* === Scanlines === */
+#liveMonitor::after,
+#achievementPanel::after,
+#skillTreePanel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 0, 0.05),
+    rgba(0, 255, 0, 0.05) 1px,
+    transparent 2px
+  );
+  mix-blend-mode: overlay;
+  z-index: 6000;
+  opacity: 0.35;
+}
+
+/* === Einheitliche Buttons === */
+#achievementPanel button,
+#skillTreePanel button,
+#liveMonitor button {
+  background: #002200;
+  border: 1px solid #00ff00;
+  color: #33ff33;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', monospace;
+}
+#achievementPanel button:hover,
+#skillTreePanel button:hover,
+#liveMonitor button:hover {
+  background: #004400;
+  box-shadow: 0 0 8px #00ff00;
+}
+
+/* === Optionaler Glow bei aktiven Panels === */
+#liveMonitor.active,
+#achievementPanel.active,
+#skillTreePanel.active {
+  box-shadow: 0 0 20px #00ff00, inset 0 0 25px #00ff00;
+}
+
+
+#buildingInfoBar button.actionButton,
+#repairAllBtn {
+  font-size: 13px;
+  padding: 3px 8px;
+  min-width: 90px;      /* Mindestbreite: wie Market-Buttons */
+  max-width: 100px;     /* Begrenzte Breite: wie Market-Buttons */
+  height: 28px;         /* Einheitliche Höhe wie die Market-Buttons */
+  border-radius: 4px;
+  background: #003300;
+  color: #33ff33;
+  border: 1px solid #00ff00;
+  font-weight: bold;
+  box-shadow: none;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  transition: background 0.3s;
+}
+#buildingInfoBar button.actionButton:hover {
+  background: #004400;
+}
+.live-item:hover {
+  background-color: #004400;
+  box-shadow: 0 0 5px #00ff00;
+  cursor: pointer;
+}
+
+/* style.css */
+
+/* === NEU: Überschrift für den Siedlungsnamen === */
+.settlement-title {
+  text-align: center;
+  color: #33ff33;
+  margin: 20px 0 30px 0; /* Etwas mehr Platz nach unten */
+  font-size: 28px;
+  text-shadow: 0 0 5px #00ff00; /* Leichter Leuchteffekt */
+  border-bottom: 2px dashed #004400; /* Trennlinie im DOS-Stil */
+  padding-bottom: 10px;
+}
+
+#eventModal {
+  position: absolute;
+  text-align: center;
+  
+  top: -150px; 
+  left: 0; 
+  right: 0;
+  margin: 0 auto;
+  
+  width: 60%; 
+  max-width: 500px;
+  padding: 15px 20px; 
+  height: auto;
+  
+  background: #001100;
+  border: 3px solid #33ff33; 
+  box-shadow: 0 0 15px #00ff00;
+  color: #33ff33;
+  font-family: 'Courier New', monospace;
+
+  transition: top 0.4s ease-out;
+  z-index: 5000;
+  
+  background-image:
+    linear-gradient(rgba(0,255,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* === AKTIVER ZUSTAND === */
+#eventModal.active {
+  top: 20px; 
+  display: flex;
+}
+
+
+#eventModalMsg {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.event-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.event-button {
+    width: 120px; /* Einheitliche Größe für Buttons */
+    font-family: 'Courier New', monospace;
+    background: #003300;
+    border: 1px solid #006600;
+    color: #33ff33;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.event-button:hover {
+    background: #004400;
+    box-shadow: 0 0 5px #00ff00;
+}
+/* --- NEUE AVATAR-STYLES FÜR SMILEY-BUILDER --- */
+/* Wrapper & Grundstruktur */
+/* === REALISTISCHER AVATAR BUILDER – STYLING === */
+
+/* === Avatar Builder Ergänzungen (Tabs + Scroll) === */
+
+
+
+/* Style für den Avatar Icon im Spiel */
+.player-avatar-icon {
+    /* Basiskonfiguration für den Smiley-Kopf */
+    width: 40px; 
+    height: 40px;
+    border: 2px solid #33ff33;
+    background-color: #FFFF00; /* Startfarbe */
+    margin-right: 10px;
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.5); 
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+    border-radius: 50%; /* Muss immer ein Kreis sein */
+    padding: 0;
+    /* Ermöglicht die korrekte Anzeige des SVG-Inhalts */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Stil für die Navigationsbuttons im Builder */
+.avatar-nav-btn {
+    background-color: #004400;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 5px;
+    transition: background-color 0.1s;
+}
+
+.avatar-nav-btn:hover {
+    background-color: #006600;
+}
+
+.avatar-nav-btn:active {
+    background-color: #33ff33;
+    color: #001100;
+}
+
+/* Stellt sicher, dass das SVG zentriert und richtig skaliert wird */
+#playerAvatarDisplay svg {
+    width: 100%;
+    height: 100%;
+    /* Stellt sicher, dass die SVG-Elemente in schwarz sind */
+    fill: black; 
+    stroke: black;
+}
+
+/* Korrektur: Name/Rang-Überschrift neben Avatar besser zentrieren */
+#game-screen > div h2 {
+    margin: 0;
+}
+/* --- NEU: AVATAR TOGGLE STYLES --- */
+#avatarBuilderWrapper {
+    margin-top: 20px;
+    border: 1px solid #004400; /* Leichter Rahmen um den gesamten Bereich */
+    box-shadow: 0 0 5px rgba(51, 255, 51, 0.1);
+}
+
+#avatarToggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background-color: #002200; /* Dunkler Hintergrund für den Header */
+    border-bottom: 1px solid #004400;
+    cursor: pointer;
+    font-weight: bold;
+    user-select: none; /* Text nicht markierbar */
+    transition: background-color 0.1s ease;
+}
+
+#avatarToggle:hover {
+    background-color: #003300;
+}
+
+.toggle-icon {
+    transition: transform 0.2s ease-out; /* Animation für den Pfeil */
+}
+
+/* Der Builder Container selbst wird initial versteckt */
+#avatarBuilderContainer {
+    max-height: 0; /* Zum Verstecken und Animieren des Inhalts */
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    padding: 0 10px; /* Kein Padding, wenn versteckt */
+}
+
+/* Zustand, wenn der Builder aufgeklappt ist */
+#avatarBuilderWrapper.active #avatarBuilderContainer {
+    max-height: 500px; /* Groß genug, um den gesamten Inhalt zu zeigen */
+    padding: 10px; /* Padding nur, wenn sichtbar */
+}
+
+/* Dreht das Icon (Pfeil nach unten), wenn aktiv */
+#avatarBuilderWrapper.active .toggle-icon {
+    transform: rotate(90deg);
+}
+
+/* Aktualisiert den Text, wenn aktiv */
+#avatarBuilderWrapper.active .header-text {
+    color: #33ff33;
+    text-shadow: 0 0 5px rgba(51, 255, 51, 0.5); /* Leichter Glow */
+}
+/* --- AVATAR BUILDER - NEUE STYLES --- */
+#avatarPreviewContainer {
+    width: 100%;
+    height: 100px; /* Mehr Platz für Vorschau */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: #001100; /* Hintergrund für die Vorschau */
+    border: 1px solid #004400;
+    box-shadow: inset 0 0 5px rgba(51, 255, 51, 0.1);
+}
+
+#avatarPreviewSvg {
+    width: 80px; /* Größere Vorschau im Builder */
+    height: 80px;
+    border: 1px solid #33ff33;
+    box-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+    background-color: transparent; /* Der Kopf selbst hat Farbe */
+}
+
+.avatar-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Abstand zwischen den Kontrollgruppen */
+    padding: 10px 0;
+}
+
+.control-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002200;
+    padding: 5px 10px;
+    border: 1px solid #004400;
+}
+
+.control-group label {
+    flex-grow: 1; /* Label nimmt verfügbaren Platz ein */
+    text-align: left;
+    color: #33ff33;
+    font-weight: normal;
+}
+
+.avatar-nav-btn {
+    background-color: #004400;
+    color: #33ff33;
+    border: 1px solid #007700;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    min-width: 30px; /* Für bessere Klickbarkeit */
+    text-align: center;
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.avatar-nav-btn:hover {
+    background-color: #007700;
+    color: white;
+}
+
+.avatar-nav-btn i {
+    font-size: 1.1em; /* Icons etwas größer */
+}
+
+/* Stil für den Player Avatar im Spiel-Header */
+#playerAvatarDisplay {
+    border-radius: 50%;
+    /* border, box-shadow, background-color werden dynamisch gesetzt */
+    overflow: hidden; /* Sicherstellen, dass nichts überläuft */
+}
+
+#playerAvatarDisplay svg {
+    display: block; /* Entfernt zusätzlichen Platz unter SVG */
+}
+
+.avatar-builder-wrap {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background: rgba(0,30,0,0.18);
+  border: 1px solid rgba(0,255,100,0.06);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* linke Spalte */
+.avatar-left {
+  width: 160px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.avatar-preview-frame {
+  width:120px;
+  height:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  border:1px solid rgba(0,120,60,0.2);
+  background: linear-gradient(180deg,#001100,#002200);
+  box-shadow: 0 0 10px rgba(0,255,100,0.06);
+}
+.avatar-actions { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; justify-content:center; }
+
+/* rechte Spalte */
+.avatar-right { flex:1; min-width:360px; }
+.tabs { display:flex; gap:6px; margin-bottom:8px; }
+.tab-btn {
+  background:#003300; color:#baffb8; border:1px solid #007744; padding:6px 8px; border-radius:6px;
+  cursor:pointer;
+}
+.tab-btn.active { background:linear-gradient(180deg,#006600,#003300); color:#fff; box-shadow:0 0 8px rgba(0,255,120,0.2); border-color:#33ff77; }
+
+.tab-content { border:1px solid rgba(0,120,60,0.08); border-radius:8px; padding:8px; background: rgba(0,10,0,0.15); max-height:320px; overflow:hidden; }
+/* Panel Scroll (innerhalb der Tabs) */
+.tab-panel { display:none; height:100%; }
+.tab-panel.active { display:block; }
+.panel-scroll { height:280px; overflow:auto; padding-right:8px; }
+
+/* Buttons / Rows */
+.btn-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.kopfform-btn, .mund-btn, .haar-btn, .bart-btn { background:#002800; color:#bfffbf; border:1px solid #006633; padding:6px; border-radius:6px; cursor:pointer; }
+.kopfform-btn.selected, .mund-btn.selected, .haar-btn.selected, .bart-btn.selected { background:linear-gradient(180deg,#008844,#004422); color:#fff; border-color:#33ff77; box-shadow:0 0 8px rgba(0,255,120,0.18); transform:translateY(-1px); }
+
+/* Paletten */
+.palette-row { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+.swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,0.25); cursor:pointer; }
+.swatch.round { border-radius:50%; width:22px; height:22px; }
+
+/* Inputs */
+input[type="range"] { width:100%; margin-top:6px; -webkit-appearance:none; height:8px; background:linear-gradient(90deg,#004400,#002200); border-radius:6px; }
+input[type="color"] { width:46px; height:30px; padding:2px; border-radius:6px; border:1px solid #006633; background:#002200; }
+
+/* responsive */
+@media (max-width:900px) {
+  .avatar-builder-wrap { flex-direction:column; }
+  .avatar-left { width:100%; display:flex; flex-direction:row; justify-content:space-between; padding-bottom:6px; }
+  .avatar-right { min-width:0; }
+  .tab-content { max-height:280px; }
+}
+/* Bank Modal Styling */
+#bankModal h2 { color: #00ff99; font-family: 'Courier New', monospace; }
+#bankModal h3 { color: #99ff99; margin-bottom:6px; }
+#bankModal button { background:#003300;color:#33ff33;border:1px solid #006600;padding:6px 8px;cursor:pointer; }
+#bankModal input[type="number"] { background:#002400;border:1px solid #004400;color:#33ff33;padding:4px; }
+#bankModal .market-item { display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #003300; }
+.hud-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#infoBtn {
+    opacity: 0.6; 
+    
+    z-index: 5000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Rund */
+    background-color: #004400; 
+    border: 2px solid #33ff33;
+    color: #33ff33;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00ff0033; 
+    
+    transition: all 0.2s ease-in-out; /* Übergangseffekt hinzufügen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#infoBtn:hover {
+    /* NEU: Opazität beim Hover auf 100% erhöhen, um Klickbarkeit zu signalisieren */
+    opacity: 1.0; 
+    background-color: #006600;
+    box-shadow: 0 0 10px #33ff77;
+    transform: scale(1.05);
+}
+
+/* Der Rest der CSS-Ergänzungen für das Modal bleibt unverändert. */
+
+/* --- Basis-Stil für den Modal-Overlay (Überlagerung) --- */
+.modal-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 5002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Animation-Vorbereitung */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --- Stil für den eigentlichen Modal-Inhalt --- */
+.modal-content {
+    background: #002200;
+    color: #33ff33;
+    max-width: 700px; 
+    width: 90%;
+    margin: 20px;
+    padding: 30px;
+    border: 3px solid #33ff33;
+    box-shadow: 0 0 15px #33ff33;
+    text-align: left;
+    position: relative;
+    max-height: 90vh; 
+    display: flex;
+    flex-direction: column;
+    /* Animation-Vorbereitung */
+    transform: translateY(-50px);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-overlay.open .modal-content {
+    transform: translateY(0);
+}
+
+.info-scroll-area {
+    overflow-y: auto;
+    max-height: 65vh; 
+    margin-top: 15px;
+    padding-right: 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.modal-title {
+    color: #33ff77;
+    border-bottom: 1px dashed #006600;
+    padding-bottom: 10px;
+    margin-top: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.modal-close-btn {
+    align-self: flex-end; 
+    margin-top: 20px;
+    padding: 8px 15px;
+    background: #002200;
+    border: 2px solid #ff3333; /* Roter Warn-Stil */
+    color: #ff3333;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 5px #ff333388;
+}
+
+.modal-close-btn:hover {
+    background: #220000;
+    box-shadow: 0 0 10px #ff7777;
+}
+
+/* Info-Inhalt spezifisch */
+.info-scroll-area h4 {
+    color: #33ff77;
+    margin-top: 20px;
+    border-bottom: 1px dotted #006600;
+    padding-bottom: 3px;
+    text-transform: uppercase;
+}
+.info-scroll-area ul {
+    list-style-type: '⚡ ';
+    padding-left: 20px;
+}
+.info-scroll-area li {
+    margin-bottom: 8px;
+}
+
+/* NEUER STIL FÜR DIE DETAILLIERTE ABZEICHEN-ANSICHT */
+/* ... (Bestehende CSS-Styles) ... */
+
+/* ... (Bestehende CSS-Styles) ... */
+
+/* NEUER STIL FÜR TABS */
+/* NEUER STIL FÜR TABS */
+.achievement-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 0;
+    border-bottom: 1px solid #004400;
+}
+
+.tab-btn {
+    background-color: #002200;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    border-bottom: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.1s, color 0.1s;
+    outline: none;
+}
+
+.tab-btn:hover {
+    background-color: #004400;
+}
+
+.tab-btn.active {
+    background-color: #33ff33;
+    color: #000;
+    border-color: #33ff33;
+    font-weight: bold;
+}
+
+.tab-content {
+    padding: 10px 0;
+	max-height: 50vh;
+    overflow-y: auto; 
+    padding-right: 15px;
+}
+
+/* NEUER STIL FÜR DIE DETAILLIERTE ABZEICHEN-ANSICHT (LISTEN-STIL) */
+.achievement-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px;
+}
+
+.achievement-detail-item {
+    background: #002200; 
+    border: 1px solid #33ff33;
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column; 
+    box-shadow: 0 0 5px #000;
+}
+
+.achievement-detail-item strong {
+    color: #ffcc00; 
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    border-bottom: 1px dotted #004400;
+    padding-bottom: 3px;
+}
+
+.achievement-detail-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    color: #66ff66; 
+    font-family: 'Courier New', Courier, monospace;
+    border-top: 1px dotted #001a00;
+}
+
+.achievement-detail-entry:first-of-type {
+    border-top: none;
+}
+
+/* Farben für freigeschaltet / gesperrt */
+.achievement-detail-entry.locked {
+    color: #004400;
+}
+
+.achievement-detail-entry.unlocked {
+    color: #66ff66; 
+}
+
+.icon-name-wrapper {
+    display: flex;
+    align-items: center;
+    flex-basis: 50%;
+}
+
+.detail-icon {
+    width: 20px; /* Kleinere Icons */
+    height: 20px;
+    margin-right: 8px;
+    filter: grayscale(100%); /* Standardmäßig grau (locked) */
+    transition: filter 0.3s;
+}
+
+.achievement-detail-entry.unlocked .detail-icon {
+    filter: grayscale(0%); /* Hell/Farbig wenn freigeschaltet (unlocked) */
+}
+
+.achievement-detail-entry .name {
+    font-weight: bold;
+    color: #33ff33;
+    transition: color 0.3s;
+}
+
+.achievement-detail-entry.locked .name {
+    color: #004400;
+}
+
+.achievement-detail-entry .condition {
+    flex-basis: 50%;
+    text-align: right;
+    font-style: italic;
+}
+#all-achievements-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; 
+    justify-content: flex-start;
+}
+/* style.css (Am Ende hinzufügen) */
+
+/* Stil für den Kategorie-Header (der klappbar ist) */
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #004400;
+    padding-bottom: 3px;
+    margin-bottom: 5px !important; 
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.category-header:hover {
+    color: #66ff66;
+}
+
+.category-header i {
+    transition: transform 0.2s;
+    margin-left: 10px;
+}
+
+/* Hinzufügen des Stils für den Container, der die Kategorie-Elemente verbirgt/zeigt */
+.building-category-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Etwas enger als der Haupt-Gap */
+    max-height: 2000px; /* Groß genug, um immer sichtbar zu sein */
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s;
+    opacity: 1;
+}
+
+.building-category-container:not(.active) {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Stil für die Gruppe gleicher Gebäude (die neue "Zelt (x10)" Box) */
+.building-type-group {
+    /* building-item Stil wird übernommen, nur kleine Anpassungen */
+    min-width: unset !important; /* Passt die Breite an den Container an */
+    padding: 10px 12px;
+}
+
+/* Stil für den Header der Gebäudegruppe */
+.building-type-group .group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* Stil für die Zusammenfassung */
+.building-summary {
+    margin: 5px 0;
+    padding: 5px 0;
+    border-top: 1px dotted #003300;
+    border-bottom: 1px dotted #003300;
+}
+
+.building-summary p {
+    margin: 1px 0;
+    font-size: 12px;
+}
+
+/* Stil für die Detailansicht (die Liste der einzelnen Gebäude) */
+.building-type-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px dotted #006600;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.individual-building-item {
+    border: 1px solid #004400;
+    padding: 5px;
+    background-color: #001a00;
+    position: relative;
+}
+
+.individual-building-item .health-bar-container {
+    margin-bottom: 5px;
+}
+.individual-building-item .building-actions {
+    margin-top: 5px;
+}
+.individual-building-item .building-actions button {
+    padding: 3px;
+    font-size: 11px;
+}
+/* style.css (Am Ende hinzufügen) */
+/* style.css (Am Ende hinzufügen) */
+
+/* 1. Haupt-Overlay-Container NUR für das Bestätigungs-Modal */
+#confirmationModal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Dunkler Hintergrund im Monitor */
+    z-index: 1000; /* Stellt sicher, dass es über der Liste liegt */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. Spezifischer Stil für den Inhalt des Zerstörungs-Modals (überschreibt die allgemeine .modal-content-Regel) */
+#confirmationModal .modal-content {
+    background-color: #002200;
+    color: #33ff33;
+    padding: 25px;
+    border: 3px solid #ff0000; /* Warnfarbe für Zerstörung */
+    box-shadow: 0 0 15px #ff0000;
+    width: 90%;
+    max-width: 350px; /* Kleiner als das Info-Modal */
+    text-align: center;
+    /* Stellt sicher, dass es im Zerstörungs-Modal anders aussieht */
+    transform: none; 
+}
+
+/* 3. Button-Container */
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* 4. Button-Styles */
+.modal-actions button {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Stil für den "Abbrechen"-Button */
+.defaultButton {
+    background-color: #004400;
+    border: 1px solid #33ff33;
+    color: #33ff33;
+}
+
+.defaultButton:hover {
+    background-color: #006600;
+}
+
+
+.control-icon-btn {
+    /* KEINE position: absolute HIER! */
+    background: #002200;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    cursor: pointer;
+    
+    /* Feste Größe für das Layout */
+    width: 40px;  
+    height: 40px; 
+    padding: 0; 
+    
+    /* RUNDUNG hinzugefügt */
+    border-radius: 50%; 
+    
+    /* Flex-Zentrierung */
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    opacity: 0.6; 
+    box-shadow: 0 0 5px #33ff3380;
+    transition: all 0.2s;
+}
+
+.control-icon-btn:hover {
+    opacity: 1.0; 
+    background: #006600; 
+    box-shadow: 0 0 10px #33ff77;
+    transform: scale(1.05); 
+}
+/* Stil für das Settings Modal */
+/* ===========================================
+   SETTINGS MODAL FIXES
+   =========================================== */
+/* ===========================================
+   SETTINGS MODAL - VOLLSTÄNDIGES CSS
+   Füge dies am ENDE deiner style.css hinzu
+   =========================================== */
+
+/* Basis-Modal Overlay */
+#settingsModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    z-index: 999999 !important;
+    display: none !important;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+/* Sichtbar wenn display: flex */
+#settingsModal[style*="display: flex"],
+#settingsModal[style*="display:flex"] {
+    display: flex !important;
+}
+
+/* Modal Content Box */
+#settingsModal .modal-content {
+    position: relative;
+    background-color: #002200 !important;
+    color: #33ff33 !important;
+    padding: 30px;
+    border: 3px solid #33ff33 !important;
+    box-shadow: 0 0 20px #33ff33 !important;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: left;
+    border-radius: 8px;
+    margin: auto;
+}
+
+/* Überschrift */
+#settingsModal h3 {
+    color: #33ff33 !important;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #004400;
+    padding-bottom: 10px;
+}
+
+#settingsModal h4 {
+    color: #00ff99 !important;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* Close Button */
+#closeSettingsModalBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: transparent !important;
+    border: none !important;
+    color: #ff3333 !important;
+    font-size: 28px !important;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#closeSettingsModalBtn:hover {
+    transform: scale(1.2);
+    color: #ff6666 !important;
+}
+
+/* Auto-Save Toggle Section */
+#settingsModal label {
+    color: #33ff33 !important;
+    font-size: 14px;
+}
+
+#autoSaveToggle {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    accent-color: #33ff33;
+}
+
+#autoSaveStatus {
+    color: #00ff99 !important;
+    margin-left: 10px;
+}
+
+/* Action Buttons */
+.action-btn,
+#newGameSaveBtn,
+#deleteAllSavesBtn {
+    width: 100%;
+    padding: 10px 15px !important;
+    margin-bottom: 10px;
+    background: #003300 !important;
+    border: 2px solid #33ff33 !important;
+    color: #33ff33 !important;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Courier New', monospace !important;
+    transition: all 0.2s;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.action-btn:hover,
+#newGameSaveBtn:hover,
+#deleteAllSavesBtn:hover {
+    background: #004400 !important;
+    box-shadow: 0 0 10px #33ff33;
+}
+
+#deleteAllSavesBtn {
+    background: #330000 !important;
+    border-color: #ff3333 !important;
+    color: #ff3333 !important;
+}
+
+#deleteAllSavesBtn:hover {
+    background: #440000 !important;
+    box-shadow: 0 0 10px #ff3333 !important;
+}
+
+/* Saved Games List Container */
+#savedGamesList {
+    background: #001100 !important;
+    border: 1px solid #004400 !important;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+#savedGamesList::-webkit-scrollbar {
+    width: 8px;
+}
+
+#savedGamesList::-webkit-scrollbar-track {
+    background: #001100;
+}
+
+#savedGamesList::-webkit-scrollbar-thumb {
+    background: #33ff33;
+    border-radius: 4px;
+}
+
+/* Individual Saved Game Item */
+.saved-game-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #002200 !important;
+    border: 1px solid #004400 !important;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.saved-game-item:hover {
+    background-color: #003300 !important;
+    border-color: #33ff33 !important;
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.3);
+}
+
+.saved-game-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Saved Game Info */
+.saved-game-info {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.saved-game-info strong {
+    display: block;
+    color: #33ff33 !important;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.saved-game-info p {
+    margin: 0 !important;
+    color: #99ff99 !important;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Saved Game Actions */
+.saved-game-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.saved-game-actions button,
+.save-game-load,
+.save-game-delete {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    font-weight: bold;
+    border: 2px solid;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: 'Courier New', monospace !important;
+    min-width: 65px;
+}
+
+.save-game-load {
+    background: #003300 !important;
+    border-color: #33ff33 !important;
+    color: #33ff33 !important;
+}
+
+.save-game-load:hover {
+    background: #004400 !important;
+    box-shadow: 0 0 8px #33ff33;
+}
+
+.save-game-delete {
+    background: #330000 !important;
+    border-color: #ff3333 !important;
+    color: #ff3333 !important;
+}
+
+.save-game-delete:hover {
+    background: #440000 !important;
+    box-shadow: 0 0 8px #ff3333;
+}
+
+/* Empty State */
+#savedGamesList p {
+    text-align: center;
+    color: #666666 !important;
+    font-style: italic;
+    padding: 20px;
+    margin: 0 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #settingsModal .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .saved-game-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .saved-game-actions {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .saved-game-actions button {
+        flex: 1;
+    }
+}
+/* ----------------------------------------------------- */
+/* 1. Info- und Einstellungs-Buttons eckig machen */
+/* ----------------------------------------------------- */
+/* Annahme der IDs für die Buttons auf dem Haupt-HUD */
+#infoBtn, 
+#settingsBtn {
+    /* Setzt feste Größe und entfernt Füllung für einen quadratischen Look */
+    width: 40px !important; 
+    height: 40px !important;
+    padding: 0 !important; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Stellt sicher, dass keine abgerundeten Ecken vorhanden sind */
+    border-radius: 0 !important; 
+}
+/* ----------------------------------------------------- */
+/* 2. Scrollbar-Stil an das Spiel anpassen (DOS-Stil) */
+/* ----------------------------------------------------- */
+/* Webkit-Browser (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px; /* Breite des Scrollbalkens */
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #001100; /* Dunkel wie der Monitor-Hintergrund */
+    border: 1px solid #004400; /* Rand wie der Monitor-Rand */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #33ff33; /* Helle grüne Farbe */
+    border-radius: 0px; /* Eckig */
+    border: 1px solid #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #55ff55; /* Heller bei Hover */
+}
+/* Neue Ressourcen-Icons stylen */
+#resWolle, #resGarn, #resStoff, #resKleidung {
+    border: 1px solid #33ff33;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background-color: #002200;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Spezial-Highlight für Kleidung (wichtigste Ressource der Kette) */
+#resKleidung {
+    border-color: #ffcc00;
+    box-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+}
+@keyframes blink-red {
+  0%, 100% { color: red; }
+  50% { color: #ff8888; }
+}
+.blink-red {
+  animation: blink-red 1s infinite;
+}
+
+#deleteAllConfirmModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: sans-serif;
+}
+
+#deleteAllConfirmModal > div {
+  background: #333;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+}

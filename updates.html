@@ -1,0 +1,206 @@
+<!-- updates.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Neuigkeiten</title>
+<style>
+    body {
+      background: #000; /* klassischer Monitor-Look */
+      color: #00ff88;
+      font-family: "Courier New", monospace;
+      margin: 0;
+      font-size: 0.9em;
+      line-height: 1.4em;
+    }
+
+    .update {
+      margin: 1em;
+      padding-bottom: .7em;
+      border-bottom: 1px dashed #066;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    /* leichte Verzögerung, damit die Meldungen nacheinander erscheinen */
+    .update:nth-of-type(1) { animation-delay: 0.2s; }
+    .update:nth-of-type(2) { animation-delay: 0.8s; }
+    .update:nth-of-type(3) { animation-delay: 1.4s; }
+
+    .robot-update {
+      animation: fadeIn 1.8s ease forwards, pulseGlow 4s ease-in-out infinite;
+      border-left: 3px solid #0f6;
+      padding-left: 0.6em;
+    }
+
+    .final {
+      color: #ffff66;
+      font-weight: bold;
+      border: none;
+    }
+
+    /* Sanftes Einblenden */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        filter: brightness(0.4);
+      }
+      to {
+        opacity: 1;
+        filter: brightness(1);
+      }
+    }
+
+    /* Ruhiger, leicht atmender Terminal-Glow */
+    @keyframes pulseGlow {
+      0% {
+        text-shadow: 0 0 2px #00ff8855, 0 0 4px #00ff8833;
+        box-shadow: inset 0 0 4px #00ff8822;
+      }
+      50% {
+        text-shadow: 0 0 6px #00ff88aa, 0 0 12px #00ff8855;
+        box-shadow: inset 0 0 8px #00ff8855;
+      }
+      100% {
+        text-shadow: 0 0 2px #00ff8855, 0 0 4px #00ff8833;
+        box-shadow: inset 0 0 4px #00ff8822;
+      }
+    }
+  </style>
+</head>
+
+<body style="overflow-y:auto;">
+<div class="update robot-update" style="border: 2px solid #55ff55; padding: 15px; box-shadow: 0 0 15px #33ff33; background: #001500;">
+    [01.01.2026]<strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMPROTOKOLL V1.7.0: EREIGNIS-ENGINE ERWEITERT, ZEITRAHMEN NEU KALIBRIERT, AGGRESSIONSPROTOKOLL AKTIVIERT... MAXIMALSTABIL]</strong></br>
+    <strong style="color: #00ffaa;">Kommandant, das System meldet signifikante Anpassungen im Zeitmanagement und neue, wichtige operative Kanäle. **Wir sind nun auf Aggressionen und neue Herausforderungen vorbereitet!**</strong>
+    <ul>
+        <li><strong style="color: #00ffaa;">[NEUES MODUL: AGGRESSIONSPROTOKOLL]</strong>: Aktiviert – Ihre Siedlung kann nun **andere Siedlungen plündern** gehen. Diese riskante Operation liefert **große Mengen an Ressourcen** (Beute), führt aber zu einem permanenten **Rufabzug von -100** im Funknetzwerk.</li>
+        <li><strong style="color: #00ffaa;">[VERBÜNDETE SIEDLUNGEN]</strong>: Implementiert – Nach erfolgreicher diplomatischer Arbeit können nun **Verbündete Siedlungen** im Netzwerk **hervorgehoben** werden. Diese erhalten eine besondere Markierung im Interface.</li>
+        <li><strong style="color: #00ffaa;">[ZEITSYSTEM-FIX]</strong>: Kalibriert – Der Alterungsprozess der Bewohner wurde verlangsamt. Sie altern nun nur noch **alle 5 Spieltage um ein Jahr**. Die Dauer eines einzelnen Tages wurde auf **17000 Ticks** verlängert, um mehr Zeit für Entscheidungen zu gewährleisten.</li>
+        <li><strong style="color: #00ffaa;">[NACHRICHTEN-MANAGER]</strong>: Eingebaut – Nachrichten im Ereignis-Log werden nun **automatisch nach 10 Spieltagen gelöscht**, um das System zu entlasten und die Übersicht zu verbessern.</li>
+        <li><strong style="color: #00ffaa;">[BATCH-GEBÄUDEVERWALTUNG]</strong>: Hinzugefügt – Im Gebäudemanagement können nun **alle Gebäude gleichzeitig geöffnet oder geschlossen** sowie gesammelt zur Freischaltung markiert werden.</li>
+        <li><strong style="color: #00ffaa;">[NEUE EREIGNISSE]</strong>: Implementiert – Es können nun **kritische Zufallsereignisse** auftreten:
+            <ul>
+                <li>Feuer bricht aus: Zerstört Gebäude (X).</li>
+                <li>Diebstahl: Ihre Siedlung wurde beklaut (Ressourcen X fehlen).</li>
+                <li>Infektion: Ein Bewohner hat sich in einen Zombie verwandelt und uns angegriffen (Tote X).</li>
+            </ul>
+        </li>
+        <li><strong style="color: #00ffaa;">[INFO-SEITE]</strong>: Überarbeitet – Das Spielhandbuch (🚩) wurde komplett neu strukturiert und erweitert, um die neuen Systeme klarer zu erklären.</li>
+    </ul>
+    <strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMHINWEIS: AGGRESSIONSPROTOKOLL AKTIV – NEUE EREIGNISSE EINGESPEIST – BATCH-VERWALTUNG BEREIT – ZEITRAHMEN ERWEITERT.]</strong>
+</div>
+<div class="update robot-update">[30.12.2025]<strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMPROTOKOLL V1.6.0: FUNKNETZWERK ONLINE, DIPLOMATISCHE SCHNITTSTELLE AKTIVIERT, ANSICHTSKOMPONENTEN STABILISIERT...]</strong></br>     
+<strong style="color: #00ffaa;">Kommandant, das zentrale Kommunikationsmodul meldet erfolgreichen Durchbruch. Das neue Funkgerät verbindet Ihre Siedlung nun mit der Außenwelt, eröffnet diplomatische Kanäle und stärkt Ihren Ruf im Ödland.</strong>
+
+<ul> <li><strong style="color: #00ffaa;">[NEUES MODUL: FUNKGERÄT]</strong>: Aktiviert – Über die neue Funkstation können nun andere Siedlungen angewählt werden. Sie senden Anfragen, bitten um Hilfe oder bieten Kooperationen an, wodurch Ihr Ruf im Netzwerk wächst.</li> 
+<li><strong style="color: #00ffaa;">[DIPLOMATIE & ALLIANZEN]</strong>: Implementiert – Steigt der Ruf Ihrer Siedlung, werden Allianzen möglich. Starke Bündnisse eröffnen Handelsvorteile, militärische Unterstützung und exklusive Ereignisse.</li> 
+<li><strong style="color: #00ffaa;">[REICHWEITEN-MANAGEMENT]</strong>: Eingebaut – Die Reichweite des Senders muss technisch erweitert werden, um weiter entfernte Siedlungen zu erreichen. Investitionen in Infrastruktur und Energieversorgung schalten zusätzliche Funkzonen frei.</li> 
+<li><strong style="color: #00ffaa;">[NEUES ABZEICHEN: „EINSAMER FUNKER“]</strong>: Hinzugefügt – Kommandanten, die die erste weit entfernte Außenstation erfolgreich per Funk erreichen, werden mit einem speziellen Ehrenabzeichen ausgezeichnet.</li> 
+<li><strong style="color: #00ffaa;">[INTERFACE-FEINJUSTIERUNG]</strong>: Optimiert – Kleinere Anzeigeprobleme im UI wurden beseitigt, Statusmeldungen und Symbole erscheinen nun sauber, klar lesbar und konsistent im gesamten System.</li> </ul> 
+<strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMHINWEIS: FUNKNETZWERK AKTIV – DIPLOMATISCHE KANÄLE OFFEN – ALLIANZPROTOKOLLE BEREIT – OBERFLÄCHENSTABILITÄT ERHÖHT.]</strong></div>
+
+</body>
+
+<div class="update robot-update" style="border: 2px solid #55ff55; padding: 15px; box-shadow: 0 0 15px #33ff33; background: #001500;">
+      [20.12.2025]<strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMPROTOKOLL V1.5.0: DATENSPEICHERUNG, ERWEITERTE WIRTSCHAFTS-ENGINE UND PRODUKTIONSKETTEN INIZIIERT... MAXIMALSTABIL]</strong></br>     
+       <strong style="color: #00ffaa;">Kommandant, wir melden einen massiven operativen Erfolg. Die Integration des Langzeitspeicher-Protokolls und die Expansion der Versorgungsketten sind abgeschlossen. Die Siedlung ist nun autarker und besser dokumentiert. </strong>   <ul>         
+ 	   <li><strong style="color: #00ffaa;">[NEUES MODUL: DATENSPEICHERUNG]</strong>: Aktiviert – Das 'Einstellungen'-Menü bietet nun kritische Optionen zur Sicherung und Wiederherstellung des Siedlungsstatus. Ein automatisches Sicherungssystem kann optional im Intervall aktiviert werden. <ul> 
+ 	   <li>[FUNKTIONEN]: Speichern des Spiels, Laden des Spielstands, Automatisches Speichern (Intervall einstellbar).</li> </ul> </li>         
+ 	   <li><strong style="color: #00ffaa;">[BANK-UPDATE: BÖRSENHANDEL]</strong>: Implementiert – Das Bankgebäude hat seine Funktionen signifikant erweitert. Der Rohstoffmarkt dient nun als volatile Börse. Mit Zombify-Kapital können Sie aktiv handeln. <ul> 
+ 	   <li>[FUNKTIONEN]: Leihen von Zombify (Kredit), Anlegen von Kapital (Zinsen), Handeln mit Rohstoff-Aktien (Marktpreis-basiert).</li> </ul> </li>         
+ 	   <li><strong style="color: #00ffaa;">[NEUE PRODUKTIONSKETTE: TEXTILIEN]</strong>: Aktiviert – Eine erweiterte Güterproduktion steigert die Moral und Autarkie der Bürger. Die Schafsfarm produziert nun **Garn**, welches in der Schneiderei zu **Kleidung** verarbeitet wird. Kleidung erhöht die Zufriedenheit der Bewohner.</li>         
+ 	   <li><strong style="color: #00ffaa;">[INFORMATIONS-MODUL]</strong>: Hinzugefügt – Ein neues Icon mit Ausrufezeichen (🚩) in der Ecke ermöglicht den sofortigen Zugriff auf das umfassende Spielhandbuch zur Nutzung aller Systeme.</li>         
+ 	   <li><strong style="color: #00ffaa;">[VISUELLE INDIKATOREN]</strong>: Optimiert – Das System meldet kritische Zustände nun über deutliche, visuelle Signale. <ul>
+ 	    <li>[VISUELL: Mangel]: Deutliches, pulsierendes Rotleuchten bei Ressourcenmangel (0 Einheiten).</li>
+ 	    <li>[VISUELL: Kapazität]: Lagerbestände werden mit einem Braunton markiert, sobald die maximale Kapazität erreicht ist.</li>
+ 	    <li>[VISUELL: Helligkeit]: Der Einstellungs-Block enthält nun einen Helligkeitsregler zur Anpassung der Bildschirm-Intensität.</li></ul> </li>
+      </ul>     
+ 	   <strong style="color: #ffaa00; text-shadow: 0 0 5px #ffaa00;">[SYSTEMHINWEIS: SPEICHERPROTOKOLL AKTIV – HANDELSBÖRSE BEREIT – NEUE GÜTERKETTE IN BETRIEB – KRITISCHE VISUELLE SIGNALE EINGESPEIST.]</strong> </div>
+	</body>
+<body style="overflow-y:auto;"> <div class="update robot-update">[16.11.2025]     [SYSTEMPROTOKOLL V1.4.2: NEUES GEBÄUDE, WIRTSCHAFTSMODUL UND BENUTZERÜBERSICHTEN AKTUALISIERT... STABIL]  </br>  
+       <strong style="color: #00ffaa;">Kommandant, die zentrale Datenbank meldet erfolgreiche Implementierungen im Wirtschafts- und Informationssystem. Kritische Fehler im Handelsmarkt wurden eliminiert.  </strong>  <ul>         
+	   <li>[NEUES GEBÄUDE: BANK]: Aktiviert – Ohne Bank ist die Zombify-Obergrenze auf 500 begrenzt. Durch den Bau der Bank können Sie Ihre Geldeinnahmen signifikant steigern. <ul> 
+	   <li>[FUNKTIONEN]: Sparen, Leihen, Anlegen und Handeln (basierend auf aktuellen Rohstoffpreisen des Marktes).</li> </ul> </li>         
+	   <li>[MARKT-FIX]: Behoben – Die Steuerung des Reglers für die Ressourcenanzahl ist wieder vollständig funktionsfähig. Market-Shutdowns wurden stabilisiert und unterbunden.</li>         
+	   <li>[INFORMATIONEN]: Neues Modul "Spielprinzip & Handbuch" wurde hinzugefügt und ist abrufbar.</li>         
+	   <li>[ABZEICHEN-ÜBERSICHT]: Überarbeitet – Neben der oberflächlichen Ansicht ist nun eine detaillierte Übersicht verfügbar, welche alle Einzelheiten zu jedem freigeschalteten Abzeichen darstellt.</li>         
+	   <li>[GEBÄUDE-ÜBERSICHT]: Optimiert – Die Kategorisierung kann jetzt mittels Dropdown-Menüs verwaltet werden. Doppelte Häuser werden unter ihrem Haustyp zusammengefasst, teilen sich eine Ansicht und können per Klick einzeln zur Bearbeitung freigelegt werden.</li>     </ul>     
+	   [SYSTEMHINWEIS: BANKMODUL AKTIV – MARKTSTABILITÄT WIEDERHERGESTELLT – NEUE ÜBERSICHTEN UND HANDBUCH AKTIVIERT.] </div>
+<div class="update robot-update">[11.11.2025]
+    [SYSTEMPROTOKOLL V1.4.1: AVATAR-MODUL UND BENUTZERINTERFACE OPTIMIERT... STABIL]
+    <br><br>
+    Kommandant, die Zentrale bestätigt erfolgreiche Implementierungen im **Avatar-System** sowie im **Benutzerinterface des Live-Monitors**.
+    <ul>
+        <li>[AVATAR-MODUL]: Aktiviert – jeder Benutzer kann nun einen **eigenen Avatar gestalten**. Auswahl aus verschiedenen Kopf- und Farbvarianten zur vollständigen Personalisierung eurer Identität innerhalb des Systems.</li>
+        <li>[INFORMATIONSFENSTER-OPTIMIERUNG]: Das **Ereignis- und Statusfenster** wurde überarbeitet – es erscheint nun **oberhalb des Interfaces**, ohne die übrigen **Monitor-Aktionen zu blockieren**. Der Spielfluss bleibt damit ununterbrochen erhalten.</li>
+        <li>[ERRUNGENSCHAFTEN]: Überarbeitete **Grafikdarstellung der Abzeichen und Symbole** – deutlich klarere Erkennbarkeit und einheitliches Design für alle freigeschalteten Erfolge.</li>
+        <li>[SYSTEMSTABILITÄT]: Kleinere Anpassungen im Rendering-Prozess sorgen für eine **flüssigere Vorschau** und stabilere Darstellung des Avatars im Hauptfenster.</li>
+    </ul>
+    [SYSTEMHINWEIS: AVATAR-EDITOR AKTIV – BENUTZEROBERFLÄCHE UND ERRUNGENSCHAFTEN ERFOLGREICH AKTUALISIERT.]
+</div>
+<div class="update robot-update">[02.11.2025]
+    [SYSTEMPROTOKOLL V1.4: ÜBERWACHUNGSMODUL UND GEBIETSMANAGEMENT AKTIVIERT... STABIL]
+    <br><br>
+    Kommandant, die Zentrale meldet erfolgreiche Systemerweiterungen im Live-Monitor und im Verwaltungsnetzwerk eurer Siedlung.
+    <ul>
+        <li>[LIVE-MONITOR V2.0]: Freischaltung des **Beobachter-Interfaces** – im Live-Monitor werden nun **Bewohner mit Namen** sowie deren **Gebäudetypen** sichtbar. Perfekte Übersicht in Echtzeit gewährleistet.</li>
+        <li>[GEBÄUDE-BEREICH]: Der **Massenreparatur-Button** wurde in den Gebäudebereich verlegt. Dort wird nun zusätzlich die **Gesamtzahl aller errichteten Gebäude** angezeigt.</li>
+        <li>[BAUBEGRENZUNG]: Zu Beginn können **maximal fünf Gebäude** errichtet werden. Durch das **Beanspruchen neuer Gebiete** erweitert sich die verfügbare Baukapazität – steuerbar über den Fertigkeitenbaum.</li>
+        <li>[FERTIGKEITEN-OPTIMIERUNG]: Neue Option – durch den Einsatz von **Festpunkten** können alle Bewohner gleichzeitig in einen Zustand **maximaler Zufriedenheit** versetzt werden.</li>
+        <li>[SYSTEMSTABILITÄT]: Überarbeitete Abläufe sorgen für ein ruhigeres und effizienteres Spielerlebnis beim Aufbau und der Überwachung eurer Basis.</li>
+    </ul>
+    [SYSTEMHINWEIS: ALLE MODULE LAUFEN STABIL – LIVE-ÜBERWACHUNG UND GEBIETSMANAGEMENT JETZT AKTIV.]
+</div>
+
+<div class="update robot-update">[31.10.2025]
+    [SYSTEMPROTOKOLL V1.3: FERTIGKEITEN-UPGRADE INITIIERT... STABIL]
+    <br><br>
+    Kommandant, die Kontrollzentrale bestätigt die erfolgreiche Integration des Fertigkeitenbaums und weitere Systemoptimierungen.
+    <ul>
+        <li>[FERTIGKEITENBAUM]: Das neue Skill-System erlaubt das **Freischalten zusätzlicher Bauplätze**, die Aktivierung des **Live-Monitor-Features**, sowie den Zugriff auf **neue Gebäudetypen**.</li>
+        <li>[REPARATUR-FUNKTION]: Durch bestimmte Skills ist jetzt die **Reparatur von Häusern** möglich. So bleibt eure Siedlung instand und widerstandsfähig.</li>
+        <li>[LAGERHAUS]: Einführung des **Hauslagers** – Man starten jetzt mit einem Lagerplatz von 50. Mit Bau eines Lagerhauses wird die Kapazität jeweils um 50 erhöht.</li>
+        <li>[STYLE & UX]: Diverse **stilistische Verbesserungen** und UI-Optimierungen sorgen für eine klarere Darstellung und ein flüssigeres Spielerlebnis.</li>
+        <li>[WEITERE ERWEITERUNGEN]: Weitere Skills werden in kommenden Updates folgen – bleibt wachsam!</li>
+    </ul>
+    [SYSTEMHINWEIS: ALLE SYSTEMKOMPONENTEN LAUFEN STABIL – NEUE FEATURES AB SOFORT VERFÜGBAR.]
+</div>
+
+<div class="update robot-update">[28.10.2025]
+    [SYSTEMPROTOKOLL V1.2: INITIIERE DATEN-UPLINK... STABIL]
+    <br><br>
+    Kommandant, die Kontrollzentrale meldet erfolgreiche Implementierung von Patch V1.2. 
+    Fokus: Erweiterte Überwachung, Fortschrittssysteme und Markt-Optimierung.
+    <ul>
+        <li>[LIVE-MONITOR]: Das neue Überwachungssystem erlaubt nun die **Live-Verfolgung** eurer gesamten Siedlung in Echtzeit. Alle Bewohneraktivitäten werden zentral protokolliert.</li>
+        <li>[ERRUNGENSCHAFTEN]: Einführung eines **Achievements-Systems** zur Steigerung der Motivation. Verdient Abzeichen für besondere Leistungen und behaltet klare Ziele im Blick.</li>
+        <li>[MARKT 2.0]: Der Handelsmarkt wurde **vollständig überarbeitet** – klarere Übersicht, verbesserte Preislogik und erhöhte Handelsfrequenz.</li>
+        <li>[ALTERUNGSSYSTEM]: Kinder gelten nun bis zum **vollendeten 12. Lebensjahr** als „Kind“. Danach wechseln sie automatisch in den Jugendlichen-Status.</li>
+        <li>[STATUSANZEIGE]: Du wirst jetzt als **permanente Siedlungsbewohner** registriert. Eure Präsenz bleibt damit dauerhaft dokumentiert.</li>
+    </ul>
+    [SYSTEMHINWEIS: DATENBANKAKTUALISIERUNG ABGESCHLOSSEN – NEUE FUNKTIONEN AKTIV.]
+</div>
+
+<div class="update robot-update">[26.10.2025]
+        **[SYSTEMPROTOKOLL V1.1: INITIERE DATEN-SYNCHRONISATION... OK]**
+        <br><br>
+        Kommandant, das Kontrollsystem hat **Patch V1.1** implementiert zur Stabilisierung der Ökonomie. **ACHTUNG: Neue Wirtschaftsparameter aktiv.**
+        <ul>
+            <li>**Wohnraum (Steuer-Modul):** Alle Wohngebäude generieren nun eine **tägliche Steuerpflicht** in Zombify-Währung zur Deckung der Verwaltungskosten.</li>
+            <li>**Produktion (Unterhalt):** Produktionsgebäude (z. B. Holzfällerhütte) verbrauchen nun **Ressourcen** pro Tag für den Betrieb und die Instandhaltung.</li>
+            <li>**Authentifizierung:** Der **Kommandantenname** wurde auf maximal **12 Zeichen** (Bytes) beschränkt. Die neue **Intro-Sequenz** ermöglicht nun zusätzlich die **Registrierung des Siedlungsnamens**.</li>
+        </ul>
+        **[PROTOKOLL BESTÄTIGT. ZUGANG ERTEILT.]**
+    </div>
+  <div class="update final">★ Finale Version veröffentlicht!<br>Vielen Dank fürs Testen.<br>Ab jetzt bleibt das Spiel stabil und wird nur bei Bedarf aktualisiert.<br>24.10.2025</div>
+  <div class="update">[24.10.2025] Die Geburtenrate wurde reduziert! Es werden nun weniger neue Bürger geboren, 
+  damit deine Siedlung langsamer wächst und besser verwaltbar bleibt.</div>
+  <div class="update">[25.10.2025] **Gebäudewartung eingeführt:** Die Elemente fordern ihren Tribut! 
+  Alle errichteten Gebäude unterliegen nun einer täglichen Abnutzung (Verfall). Achte auf die Lebensleiste 
+  deiner Gebäude! Du kannst sie mit Baumaterialien instand setzen, um einen Totalverlust zu vermeiden. 
+  Ein kaputtes Gebäude muss erst abgerissen oder repariert werden, bevor es wieder genutzt werden kann.</div>
+<div class="update">[25.10.2025] **Realistische Geburten:** Neugeborene starten ab sofort korrekt mit Alter 0. 
+Sie werden als 'Kind' geführt und benötigen einige Zeit, um zu erwachsenen Arbeitern heranzuwachsen.</div>
+ </body>
+</html>

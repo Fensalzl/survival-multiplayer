@@ -1,0 +1,505 @@
+/* ==========================================
+   FUNKGERÄT SYSTEM - STYLES
+   ========================================== */
+
+/* Radio-Button (oben rechts) */
+#radioBtn {
+  position: relative;
+  animation: radio-pulse 2s infinite;
+}
+
+/* Grünes Flackern (Standard) */
+@keyframes radio-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 5px #33ff3380; 
+    opacity: 0.6;
+  }
+  50% { 
+    box-shadow: 0 0 12px #33ff33; 
+    opacity: 0.85;
+  }
+}
+
+/* Rotes Blinken bei ungelesenen Nachrichten */
+#radioBtn.has-unread {
+  animation: radio-alert 0.8s infinite;
+}
+
+@keyframes radio-alert {
+  0%, 100% { 
+    box-shadow: 0 0 8px #ff3333; 
+    background: #330000;
+    border-color: #ff3333;
+  }
+  50% { 
+    box-shadow: 0 0 20px #ff0000; 
+    background: #550000;
+    border-color: #ff6666;
+  }
+}
+
+/* Radio-Panel (Haupt-Container) */
+.radio-panel {
+  position: absolute;
+  top: 60px;
+  right: -450px;
+  width: 440px;
+  max-height: 80vh;
+  background: #001100;
+  border: 2px solid #33ff33;
+  box-shadow: 0 0 20px #33ff3366;
+  transition: right 0.4s ease-out;
+  z-index: 5001;
+  overflow: hidden;
+  border-radius: 8px;
+  display: none;
+}
+
+.radio-panel.active {
+  right: 10px;
+}
+
+/* Header */
+.radio-header {
+  background: #002200;
+  padding: 12px 15px;
+  border-bottom: 2px solid #004400;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.radio-header h3 {
+  margin: 0;
+  color: #33ff33;
+  font-size: 1.2em;
+  text-shadow: 0 0 5px #33ff3366;
+}
+
+.radio-close {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 3px;
+  background: #330000;
+  border: 1px solid #ff3333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-close:hover {
+  background: #550000;
+  box-shadow: 0 0 8px #ff3333;
+}
+
+/* Tabs */
+.radio-tabs {
+  display: flex;
+  background: #001a00;
+  border-bottom: 1px solid #004400;
+}
+
+.radio-tab {
+  flex: 1;
+  background: #002200;
+  border: none;
+  border-right: 1px solid #004400;
+  color: #66ff66;
+  padding: 10px 8px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  transition: all 0.2s;
+}
+
+.radio-tab:last-child {
+  border-right: none;
+}
+
+.radio-tab:hover {
+  background: #003300;
+}
+
+.radio-tab.active {
+  background: #004400;
+  color: #33ff33;
+  font-weight: bold;
+  box-shadow: inset 0 3px 0 #33ff33;
+}
+
+/* Content Area */
+.radio-content {
+  max-height: calc(80vh - 120px);
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.radio-tab-content {
+  display: none;
+}
+
+.radio-tab-content.active {
+  display: block;
+}
+
+/* Messages */
+.radio-message {
+  background: #002200;
+  border: 1px solid #004400;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+
+.radio-message.unread {
+  border-color: #33ff33;
+  box-shadow: 0 0 8px #33ff3333;
+  animation: message-pulse 2s infinite;
+}
+
+@keyframes message-pulse {
+  0%, 100% { border-color: #33ff33; }
+  50% { border-color: #66ff66; }
+}
+
+.radio-message.read {
+  opacity: 0.7;
+}
+
+.message-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.85em;
+  color: #99ff99;
+}
+
+.message-icon {
+  font-size: 1.2em;
+}
+
+.message-day {
+  color: #66ff66;
+}
+
+.settlement-badge {
+  background: #003300;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  border: 1px solid #33ff33;
+}
+
+.settlement-badge.status-allied {
+  background: #003300;
+  border-color: #33ff33;
+  color: #33ff33;
+}
+
+.settlement-badge.status-friendly {
+  background: #002200;
+  border-color: #66ff66;
+  color: #99ff99;
+}
+
+.settlement-badge.status-hostile {
+  background: #330000;
+  border-color: #ff6666;
+  color: #ff9999;
+}
+
+.settlement-badge.status-enemy {
+  background: #440000;
+  border-color: #ff3333;
+  color: #ff6666;
+  animation: enemy-pulse 1s infinite;
+}
+
+@keyframes enemy-pulse {
+  0%, 100% { box-shadow: 0 0 3px #ff3333; }
+  50% { box-shadow: 0 0 8px #ff0000; }
+}
+
+.message-content {
+  color: #ccffcc;
+  line-height: 1.4;
+  font-size: 0.95em;
+}
+
+/* Trade Actions */
+.trade-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.radio-btn {
+  background: #003300;
+  border: 1px solid #33ff33;
+  color: #33ff33;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.radio-btn:hover:not(:disabled) {
+  background: #004400;
+  box-shadow: 0 0 8px #33ff3366;
+}
+
+.radio-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.radio-btn.accept {
+  background: #002200;
+  border-color: #33ff33;
+}
+
+.radio-btn.accept:hover {
+  background: #003300;
+}
+
+.radio-btn.decline {
+  background: #220000;
+  border-color: #ff6666;
+  color: #ff6666;
+}
+
+.radio-btn.decline:hover {
+  background: #330000;
+}
+
+/* Settlements List */
+.settlement-item {
+  background: #002200;
+  border: 2px solid #004400;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+}
+
+.settlement-item.status-allied {
+  border-color: #33ff33;
+  box-shadow: 0 0 10px #33ff3333;
+}
+
+.settlement-item.status-enemy {
+  border-color: #ff3333;
+  box-shadow: 0 0 10px #ff333333;
+}
+
+.settlement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #004400;
+}
+
+.settlement-header strong {
+  color: #33ff33;
+  font-size: 1.1em;
+}
+
+.settlement-status {
+  font-size: 0.9em;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: #001100;
+}
+
+.settlement-info {
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  color: #99ff99;
+}
+
+.settlement-info p {
+  margin: 4px 0;
+}
+
+/* Reputation Bar */
+.reputation-bar {
+  width: 100%;
+  height: 8px;
+  background: #001100;
+  border: 1px solid #004400;
+  border-radius: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.reputation-fill {
+  height: 100%;
+  transition: width 0.5s ease, background-color 0.5s;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.settlement-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Scan Panel */
+.scan-panel {
+  background: #001a00;
+  border: 2px solid #33ff33;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.scan-panel h4 {
+  color: #33ff33;
+  margin-top: 0;
+  font-size: 1.2em;
+  text-shadow: 0 0 5px #33ff3366;
+}
+
+.scan-panel p {
+  color: #99ff99;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.scan-cooldown {
+  color: #ffcc66 !important;
+  font-weight: bold;
+}
+
+.scan-max {
+  color: #ff9966 !important;
+  font-weight: bold;
+}
+
+.scan-btn {
+  margin-top: 15px;
+  padding: 12px 24px !important;
+  font-size: 1.1em !important;
+  font-weight: bold;
+}
+
+/* Empty State */
+.radio-empty {
+  text-align: center;
+  color: #66ff66;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+/* Scrollbar */
+.radio-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.radio-content::-webkit-scrollbar-track {
+  background: #001100;
+}
+
+.radio-content::-webkit-scrollbar-thumb {
+  background: #33ff33;
+  border-radius: 4px;
+}
+
+.radio-content::-webkit-scrollbar-thumb:hover {
+  background: #55ff55;
+}
+
+/* CRT-Effekt für Radio-Panel */
+.radio-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 0, 0.03) 0px,
+    rgba(0, 255, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.radio-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .radio-panel {
+    width: 95%;
+    right: -100%;
+  }
+  
+  .radio-panel.active {
+    right: 2.5%;
+  }
+}
+/* ==========================================
+   NEU: Siedlungs-Status-Hervorhebungen
+   ========================================== */
+
+/* Allgemeine Hervorhebung für "allied" (Verbündete) */
+.settlement-item.allied {
+  border-left: 5px solid #00ff7f; /* Helles Grün/Türkis */
+  box-shadow: 0 0 8px #00ff7f40;
+}
+
+/* Spezielle Textfarbe für den Status-Badge */
+.settlement-item.allied .settlement-status {
+  color: #00ff7f;
+  font-weight: bold;
+}
+/* ==========================================
+   SIEDLUNGS-LISTE ERWEITERUNG
+   ========================================== */
+
+/* Basis-Stil für die Listenelemente (falls noch nicht definiert) */
+.settlement-item {
+  background: #002200;
+  border: 1px solid #004400;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* NEU: Hervorhebung für verbündete Siedlungen (allied) */
+.settlement-item.allied {
+  /* Starker grüner Rand */
+  border: 2px solid #33ff33; 
+  /* Etwas hellerer Hintergrund */
+  background: #003300; 
+  /* Deutlicher leuchtender Effekt */
+  box-shadow: 0 0 10px rgba(51, 255, 51, 0.6), inset 0 0 8px rgba(51, 255, 51, 0.2);
+  /* Leichte Puls-Animation, um die Wichtigkeit zu betonen */
+  animation: allied-glow 2s infinite alternate; 
+}
+
+/* Animation für das Leuchten */
+@keyframes allied-glow {
+  0% { 
+    box-shadow: 0 0 10px rgba(51, 255, 51, 0.6), inset 0 0 8px rgba(51, 255, 51, 0.2); 
+  }
+  100% { 
+    box-shadow: 0 0 15px #33ff33, inset 0 0 12px #33ff33; 
+  }
+}
