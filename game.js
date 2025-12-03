@@ -556,6 +556,32 @@ function getResourceColor(amount, cap) {
   if (amount >= cap) return 'darkorange'; // Sichtbarere „voll“ Farbe
   return 'inherit';
 }
+function initMultiplayerBuildSystem() {
+    const confirmBuildBtn = document.getElementById('confirmBuildBtn');
+    const buildSelect = document.getElementById('buildSelect');
+    const buildMenu = document.getElementById('buildMenu');
+
+    // Falls UI noch nicht existiert → nicht ausführen
+    if (!confirmBuildBtn || !buildSelect) {
+        console.warn("Build-UI nicht verfügbar → Multiplayer-Bau deaktiviert.");
+        return;
+    }
+
+    confirmBuildBtn.onclick = () => {
+        const type = buildSelect.value;
+
+        // Multiplayer aktiv?
+        if (window.socket && window.socket.connected) {
+            window.socket.emit("buildRequest", { type });
+            console.log("📡 BuildRequest an Server gesendet:", type);
+        } else {
+            console.log("🛠 Offline-Modus → lokale Bau-Funktion");
+            if (typeof buildStructure === "function") buildStructure(type);
+        }
+
+        if (buildMenu) buildMenu.style.display = "none";
+    };
+}
 
 // Für Zombify separat:
 const zombifyElem = document.getElementById("window.moneyAmount");
@@ -4088,6 +4114,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+window.addEventListener("load", () => {
+    initMultiplayerBuildSystem();
+});
 
 
 
