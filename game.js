@@ -393,17 +393,7 @@ const exploreDuration = document.getElementById('exploreDuration');
 const confirmExploreBtn = document.getElementById('confirmExploreBtn');
 const cancelExploreBtn = document.getElementById('cancelExploreBtn');
 
-// Multiplayer-Bau:
-if (confirmBuildBtn && buildSelect) {
-  confirmBuildBtn.onclick = () => {
-    const type = buildSelect.value;
-    if (window.socket) {
-      window.socket.emit('buildRequest', { type });
-      console.log('BuildRequest an Server:', type);
-    }
-    if (buildMenu) buildMenu.style.display = 'none';
-  };
-}
+
 
 const exploreType = document.getElementById('exploreType');
 
@@ -4097,6 +4087,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmModal.style.display = 'none';
   });
 });
+
 
 
 
