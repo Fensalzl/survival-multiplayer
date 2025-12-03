@@ -379,11 +379,7 @@ window.nextExplorationId = nextExplorationId;
     const gameScreen = document.getElementById('game-screen');
     const settlementDiv = document.getElementById('settlement');
     const buildingListDiv = document.getElementById('buildingDisplay');
-    const chatDiv = document.getElementById('chatMessages');
-    const buildBtn = document.getElementById('buildBtn');
-	 const buildSelect = document.getElementById('buildSelect');
-  const confirmBuildBtn = document.getElementById('confirmBuildBtn');
-  const cancelBuildBtn = document.getElementById('cancelBuildBtn');
+    const chatDiv = document.getElementById('chatMessages'); 
     const exploreBtn = document.getElementById('exploreBtn');
     const marketBtn = document.getElementById('marketBtn');
     const buildMenu = document.getElementById('buildMenu');
@@ -4096,6 +4092,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmModal.style.display = 'none';
   });
 });
+
 
 
 
