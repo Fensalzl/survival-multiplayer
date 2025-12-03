@@ -327,26 +327,29 @@
 
 
 </div>
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
-// Socket global verbinden
 window.socket = io();
 
-// State-Updates empfangen
 window.socket.on('stateUpdate', (state) => {
   window.resources = state.resources || window.resources;
   window.buildings = state.buildings || window.buildings;
   window.citizens = state.citizens || window.citizens;
   window.stats = state.stats || window.stats;
 
-  if (window.statRender) window.statRender();
-  if (window.renderBuildingList) window.renderBuildingList();
+  if (typeof window.statRender === 'function') {
+    window.statRender();
+  }
+  if (typeof window.renderBuildingList === 'function') {
+    window.renderBuildingList();
+  }
 
   console.log('Multiplayer Update:', state);
 });
 </script>
 
+
 </body>
 
 </html>
+
 
