@@ -755,7 +755,70 @@ function handleDailyCalendarUpdate() {
             }
         }
     }
-    
+    // --- Multiplayer Build System (safe) ---
+// Fügt initMultiplayerBuildSystem() ein und sorgt für Singleplayer-Fallback.
+// Kopiere diesen Block in game.js (z.B. am Ende der UI-Init-Section).
+
+function initMultiplayerBuildSystem() {
+    // Hol die UI-Elemente nur zur Laufzeit (keine globalen var/let-Deklarationen, um Doppeldeklarationen zu vermeiden)
+    const confirmBuildBtn = document.getElementById('confirmBuildBtn');
+    const buildSelect = document.getElementById('buildSelect');
+    const buildMenu = document.getElementById('buildMenu');
+
+    // UI noch nicht gerendert? Dann nichts tun (schützt vor "is not defined"-Fehlern)
+    if (!confirmBuildBtn || !buildSelect) {
+        console.warn("Build-UI nicht verfügbar → Multiplayer-Bau deaktiviert (initMultiplayerBuildSystem).");
+        return;
+    }
+
+    // Entferne vorhergehende Handler (falls vorhanden), um Doppelbindung zu verhindern
+    confirmBuildBtn.onclick = null;
+
+    confirmBuildBtn.addEventListener('click', () => {
+        const type = buildSelect.value;
+
+        // Wenn Socket verfügbar und verbunden → sende BuildRequest an Server
+        if (window.socket && window.socket.connected) {
+            window.socket.emit('buildRequest', { type });
+            console.log('📡 BuildRequest an Server gesendet:', type);
+        } else {
+            // Kein Multiplayer → lokaler Bau (Singleplayer fallback)
+            console.log('🛠 Kein Socket - lokaler Bau ausgeführt:', type);
+            if (typeof buildStructure === 'function') {
+                buildStructure(type);
+            } else {
+                console.warn('buildStructure() nicht gefunden - Bau nicht ausgeführt.');
+            }
+        }
+
+        // UI schließen, wenn vorhanden
+        if (buildMenu) buildMenu.style.display = 'none';
+    });
+}
+// --- Client: Reagiere auf Server-Bauevents ---
+if (window.socket) {
+    // sichergehen, dass wir nicht mehrfach Listener registrieren
+    try { window.socket.off('buildPlaced'); } catch(e){}
+
+    window.socket.on('buildPlaced', (data) => {
+        console.log('🔨 buildPlaced empfangen vom Server:', data);
+        // data: { playerId, type, x?, y? }  -> passe an dein Schema an
+        if (typeof buildStructure === 'function') {
+            buildStructure(data.type, data);
+        } else {
+            console.warn('buildStructure() nicht gefunden - buildPlaced nicht umgesetzt.');
+        }
+    });
+}
+
+// Initialisierung sobald DOM bereit ist (SPA-sicher)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMultiplayerBuildSystem);
+} else {
+    // bereits geladen
+    initMultiplayerBuildSystem();
+}
+
     // Immer die Anzeige aktualisieren
     updateCalendarDisplay(); 
 }
@@ -4117,6 +4180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener("load", () => {
     initMultiplayerBuildSystem();
 });
+
 
 
 
