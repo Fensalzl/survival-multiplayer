@@ -116,7 +116,35 @@ window.updatePlayerRank = function(daysInService) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  
+ // Socket global speichern
+  window.socket = io();
+
+  // STATE UPDATES empfangen
+  window.socket.on('stateUpdate', (state) => {
+    if (state.resources) window.resources = state.resources;
+    if (state.buildings) window.buildings = state.buildings;
+    if (state.citizens) window.citizens = state.citizens;
+    if (state.stats) window.stats = state.stats;
+
+    if (window.statRender) window.statRender();
+    if (window.renderBuildingList) window.renderBuildingList();
+    console.log('State Update:', state);
+  });
+
+  // BUILD BUTTON ändern
+  const confirmBuildBtn = document.getElementById('confirmBuildBtn');
+  const buildSelect = document.getElementById('buildSelect');
+
+  if (confirmBuildBtn && buildSelect) {
+    confirmBuildBtn.onclick = () => {
+      const type = buildSelect.value;
+      if (window.socket) {
+        window.socket.emit('buildRequest', { type }); // an Server
+      }
+      // Optional: altes lokales startBuild(type) hier NICHT mehr aufrufen,
+      // sonst baust du doppelt (lokal + Server).
+    };
+  }
     const introScreen = document.getElementById('intro-screen');
     const introText = document.getElementById('introText');
     const introNextBtn = document.getElementById('introNextBtn');
@@ -4086,3 +4114,4 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmModal.style.display = 'none';
   });
 });
+
