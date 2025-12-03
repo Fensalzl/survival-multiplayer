@@ -116,34 +116,20 @@ window.updatePlayerRank = function(daysInService) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
- // Socket global speichern
-  window.socket = io();
+ // 1. SOCKET.IO initialisieren (global)
+  if (typeof io === 'function') {
+    window.socket = io();
 
-  // STATE UPDATES empfangen
-  window.socket.on('stateUpdate', (state) => {
-    if (state.resources) window.resources = state.resources;
-    if (state.buildings) window.buildings = state.buildings;
-    if (state.citizens) window.citizens = state.citizens;
-    if (state.stats) window.stats = state.stats;
+    window.socket.on('stateUpdate', (state) => {
+      if (state.resources) window.resources = state.resources;
+      if (state.buildings) window.buildings = state.buildings;
+      if (state.citizens) window.citizens = state.citizens;
+      if (state.stats) window.stats = state.stats;
 
-    if (window.statRender) window.statRender();
-    if (window.renderBuildingList) window.renderBuildingList();
-    console.log('State Update:', state);
-  });
-
-  // BUILD BUTTON ändern
-  const confirmBuildBtn = document.getElementById('confirmBuildBtn');
-  const buildSelect = document.getElementById('buildSelect');
-
-  if (confirmBuildBtn && buildSelect) {
-    confirmBuildBtn.onclick = () => {
-      const type = buildSelect.value;
-      if (window.socket) {
-        window.socket.emit('buildRequest', { type }); // an Server
-      }
-      // Optional: altes lokales startBuild(type) hier NICHT mehr aufrufen,
-      // sonst baust du doppelt (lokal + Server).
-    };
+      if (window.statRender) window.statRender();
+      if (window.renderBuildingList) window.renderBuildingList();
+      console.log('State Update:', state);
+    });
   }
     const introScreen = document.getElementById('intro-screen');
     const introText = document.getElementById('introText');
@@ -410,9 +396,11 @@ window.nextExplorationId = nextExplorationId;
     const buildingListDiv = document.getElementById('buildingDisplay');
     const chatDiv = document.getElementById('chatMessages');
     const buildBtn = document.getElementById('buildBtn');
+	 const buildSelect = document.getElementById('buildSelect');
+  const confirmBuildBtn = document.getElementById('confirmBuildBtn');
+  const cancelBuildBtn = document.getElementById('cancelBuildBtn');
     const exploreBtn = document.getElementById('exploreBtn');
     const marketBtn = document.getElementById('marketBtn');
-
     const buildMenu = document.getElementById('buildMenu');
     const buildSelect = document.getElementById('buildSelect');
     const confirmBuildBtn = document.getElementById('confirmBuildBtn');
@@ -423,6 +411,15 @@ window.nextExplorationId = nextExplorationId;
     const exploreDuration = document.getElementById('exploreDuration');
     const confirmExploreBtn = document.getElementById('confirmExploreBtn');
     const cancelExploreBtn = document.getElementById('cancelExploreBtn');
+	  if (confirmBuildBtn && buildSelect && window.socket) {
+    confirmBuildBtn.onclick = () => {
+      const type = buildSelect.value;
+      window.socket.emit('buildRequest', { type });
+      // Wichtig: KEIN lokales startBuild(type) mehr hier, sonst doppelt.
+      const buildMenu = document.getElementById('buildMenu');
+      if (buildMenu) buildMenu.style.display = 'none';
+    };
+  }
     const exploreType = document.getElementById('exploreType'); 
 
     const marketMenu = document.getElementById('marketMenu');
@@ -4114,4 +4111,5 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmModal.style.display = 'none';
   });
 });
+
 
