@@ -329,18 +329,19 @@
 </div>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
-// Socket verbinden
-const socket = io();
+// Socket global verbinden
+window.socket = io();
 
 // State-Updates empfangen
-socket.on('stateUpdate', (state) => {
+window.socket.on('stateUpdate', (state) => {
   window.resources = state.resources || window.resources;
   window.buildings = state.buildings || window.buildings;
   window.citizens = state.citizens || window.citizens;
   window.stats = state.stats || window.stats;
-  
-  statRender();
-  renderBuildingList();
+
+  if (window.statRender) window.statRender();
+  if (window.renderBuildingList) window.renderBuildingList();
+
   console.log('Multiplayer Update:', state);
 });
 </script>
@@ -348,3 +349,4 @@ socket.on('stateUpdate', (state) => {
 </body>
 
 </html>
+
