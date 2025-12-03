@@ -116,21 +116,6 @@ window.updatePlayerRank = function(daysInService) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
- // 1. SOCKET.IO initialisieren (global)
-  if (typeof io === 'function') {
-    window.socket = io();
-
-    window.socket.on('stateUpdate', (state) => {
-      if (state.resources) window.resources = state.resources;
-      if (state.buildings) window.buildings = state.buildings;
-      if (state.citizens) window.citizens = state.citizens;
-      if (state.stats) window.stats = state.stats;
-
-      if (window.statRender) window.statRender();
-      if (window.renderBuildingList) window.renderBuildingList();
-      console.log('State Update:', state);
-    });
-  }
     const introScreen = document.getElementById('intro-screen');
     const introText = document.getElementById('introText');
     const introNextBtn = document.getElementById('introNextBtn');
@@ -4111,5 +4096,6 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmModal.style.display = 'none';
   });
 });
+
 
 
